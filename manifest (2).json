@@ -1,0 +1,12 @@
+{
+  "background_color": "#0b1a2a",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "NH Vessel Discharge Report",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "NH Vessel",
+  "start_url": "/",
+  "theme_color": "rgb(47, 140, 187)",
+  "description": "Maritime vessel cargo operation reporting system. Developed by Md Nurul Huda Hridoy. Lifetime free, no ads."
+}
