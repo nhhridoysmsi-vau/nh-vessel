@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <meta name="theme-color" content="#0b1a2a">
-    <title>NH Vessel Discharge Report</title>
+    <title>NH Vessel Cargo Distribution</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: #0b1a2a; font-family: 'Segoe UI', Arial, sans-serif; padding: 16px 12px 100px 12px; color: #e3f0fa; }
         .container { max-width: 520px; margin: 0 auto; }
         .app-header { text-align: center; margin-bottom: 20px; padding: 15px; background: linear-gradient(135deg, #132433, #0e1a28); border-radius: 30px; border: 1px solid #2f8cbb; }
         .developer-info { display: flex; align-items: center; justify-content: center; gap: 15px; flex-wrap: wrap; }
-        .developer-photo { width: 65px; height: 65px; border-radius: 50%; border: 3px solid #2f8cbb; background: #1d3143; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: #2f8cbb; }
+        .developer-photo { width: 65px; height: 65px; border-radius: 50%; border: 3px solid #2f8cbb; object-fit: cover; background: #1d3143; }
         .developer-text h1 { font-size: 1.5rem; color: #c9e2ff; border: none; padding: 0; margin: 0; }
         .developer-text .credit { font-size: 0.75rem; color: #7aa9c4; margin-top: 5px; }
         .card { background: #132433; border-radius: 28px; padding: 20px 18px; margin-bottom: 24px; border: 1px solid #2e5470; }
@@ -36,15 +36,17 @@
         .history-btn { background: #2f8cbb; padding: 12px; font-size: 0.9rem; margin: 5px; flex: 1; min-width: 90px; border-radius: 30px; border: none; color: white; cursor: pointer; }
         .history-container { display: flex; flex-wrap: wrap; gap: 8px; margin: 15px 0; }
         .footer-credit { text-align: center; padding: 15px; margin-top: 10px; font-size: 0.7rem; color: #5a7b9c; border-top: 1px solid #2e5470; }
+        .footer-photo { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 5px; }
+        .small-photo { width: 30px; height: 30px; border-radius: 50%; border: 1px solid #2f8cbb; object-fit: cover; background: #1d3143; }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="app-header">
         <div class="developer-info">
-            <div class="developer-photo">⚓</div>
+            <img class="developer-photo" src="https://raw.githubusercontent.com/nhhridoysmi-vau/nh-vessel/main/1774031869005.png" alt="Md Nurul Huda Hridoy">
             <div class="developer-text">
-                <h1>⚓ NH VESSEL DISCHARGE REPORT</h1>
+                <h1>⚓ NH VESSEL CARGO DISTRIBUTION</h1>
                 <div class="credit">Developed by <strong>Md Nurul Huda Hridoy</strong></div>
             </div>
         </div>
@@ -119,7 +121,10 @@
     </div>
 
     <div class="footer-credit">
-        <div>⚓ NH Vessel Discharge Report | Developed by Md Nurul Huda Hridoy</div>
+        <div class="footer-photo">
+            <img class="small-photo" src="https://raw.githubusercontent.com/nhhridoysmi-vau/nh-vessel/main/1774031869005.png" alt="NH">
+            <span>⚓ NH Vessel Cargo Distribution | Developed by Md Nurul Huda Hridoy</span>
+        </div>
         <div>Lifetime Free | No Ads | No Expiry | Unlimited Vessels</div>
     </div>
 
@@ -346,9 +351,9 @@
     // PWA Setup
     window.addEventListener('load', () => {
         const manifest = {
-            name: "NH Vessel Discharge Report", short_name: "NH Vessel", start_url: ".", display: "standalone",
+            name: "NH Vessel Cargo Distribution", short_name: "NH Vessel", start_url: ".", display: "standalone",
             theme_color: "#0b1a2a", background_color: "#0b1a2a",
-            icons: [{src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%232f8cbb'/%3E%3Ctext x='50' y='70' font-size='40' text-anchor='middle' fill='white'%3E⚓%3C/text%3E%3C/svg%3E", sizes: "any"}]
+            icons: [{src: "https://raw.githubusercontent.com/nhhridoysmi-vau/nh-vessel/main/1774031869005.png", sizes: "any"}]
         };
         const link = document.createElement('link');
         link.rel = 'manifest';
