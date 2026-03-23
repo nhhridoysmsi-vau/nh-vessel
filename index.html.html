@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>NH Vessel Cargo Distribution</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0b1a2a; font-family: 'Segoe UI', Arial, sans-serif; padding: 16px 12px 100px 12px; color: #e3f0fa; }
+        .container { max-width: 520px; margin: 0 auto; }
+        .app-header { text-align: center; margin-bottom: 20px; padding: 15px; background: linear-gradient(135deg, #132433, #0e1a28); border-radius: 30px; border: 1px solid #2f8cbb; }
+        .developer-info { display: flex; align-items: center; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .developer-photo { width: 65px; height: 65px; border-radius: 50%; border: 3px solid #2f8cbb; background: #1d3143; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: #2f8cbb; }
+        .developer-text h1 { font-size: 1.5rem; color: #c9e2ff; border: none; padding: 0; margin: 0; }
+        .developer-text .credit { font-size: 0.75rem; color: #7aa9c4; margin-top: 5px; }
+        .card { background: #132433; border-radius: 28px; padding: 20px 18px; margin-bottom: 24px; border: 1px solid #2e5470; }
+        .card-header { font-size: 1.3rem; font-weight: 600; margin-bottom: 18px; color: #b3defa; border-bottom: 1px dashed #2e5470; padding-bottom: 12px; }
+        .field { margin-bottom: 16px; }
+        label { display: block; font-size: 0.85rem; color: #99c4e8; margin-bottom: 6px; font-weight: 500; }
+        input, select, textarea { width: 100%; background: #1d3143; border: 1.5px solid #314d66; border-radius: 25px; padding: 14px 18px; font-size: 1rem; color: white; outline: none; }
+        .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+        button { background: #2f6d94; border: none; border-radius: 40px; padding: 16px 22px; font-size: 1.1rem; font-weight: 600; color: white; width: 100%; margin-top: 12px; border: 1px solid #4797c9; border-bottom: 4px solid #1a4b6e; cursor: pointer; }
+        button:active { transform: translateY(4px); border-bottom-width: 2px; }
+        .copy-btn { background: #3b4f64; border-color: #5a7b9c; border-bottom-color: #1b2a38; }
+        .output { background: #0d1a24; border-radius: 22px; padding: 16px 18px; margin: 18px 0 8px; font-family: monospace; white-space: pre-wrap; border: 1px solid #35576f; color: #d6edff; }
+        .list-box { background: #1a2c3c; border-radius: 20px; padding: 15px; margin-top: 15px; max-height: 250px; overflow-y: auto; }
+        .list-item { padding: 8px 12px; border-bottom: 1px solid #2e5470; color: #e3f0fa; display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .edit-small-btn, .delete-small-btn { background: #2f6d94; border: none; border-radius: 20px; padding: 4px 12px; font-size: 0.7rem; color: white; cursor: pointer; width: auto; margin: 0; }
+        .delete-small-btn { background: #a13e3e; }
+        .status-badge { padding: 12px; border-radius: 25px; margin: 15px 0; text-align: center; font-weight: bold; }
+        .status-green { background: #1e3a2e; color: #4caf50; border: 1px solid #4caf50; }
+        .status-red { background: #3e1e1e; color: #ffaa66; border: 1px solid #ffaa66; }
+        .status-neutral { background: #2a3a4a; color: #b3defa; border: 1px solid #3f6b8f; }
+        .fixed-copy { position: fixed; bottom: 10px; left: 10px; right: 10px; max-width: 520px; margin: 0 auto; z-index: 1000; }
+        .history-btn { background: #2f8cbb; padding: 12px; font-size: 0.9rem; margin: 5px; flex: 1; min-width: 90px; border-radius: 30px; border: none; color: white; cursor: pointer; }
+        .history-container { display: flex; flex-wrap: wrap; gap: 8px; margin: 15px 0; }
+        .footer-credit { text-align: center; padding: 15px; margin-top: 10px; font-size: 0.7rem; color: #5a7b9c; border-top: 1px solid #2e5470; }
+        .footer-photo { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 5px; }
+        .small-photo { width: 30px; height: 30px; border-radius: 50%; border: 1px solid #2f8cbb; background: #1d3143; }
+        .balance-box { background: #1e3a5f; padding: 12px; border-radius: 20px; text-align: center; margin: 15px 0; border-left: 5px solid #4caf50; }
+        .auto-fill-btn { background: #2f8cbb; margin-top: 8px; padding: 10px; font-size: 0.9rem; }
+        .delete-all-btn { background: #a13e3e; margin-top: 10px; border-bottom-color: #6b2e2e; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="app-header">
+        <div class="developer-info">
+            <div class="developer-photo">⚓</div>
+            <div class="developer-text">
+                <h1>⚓ NH VESSEL CARGO DISTRIBUTION</h1>
+                <div class="credit">Developed by <strong>Md Nurul Huda Hridoy</strong></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD MOTHER VESSEL -->
+    <div class="card">
+        <div class="card-header">➕ ADD MOTHER VESSEL</div>
+        <div class="field"><label>VESSEL NAME</label><input type="text" id="vesselName" placeholder="e.g. DUBAI OCEAN"></div>
+        <div class="row2"><div><label>CARGO</label><input type="text" id="cargoName" placeholder="WHEAT"></div><div><label>TOTAL (MT)</label><input type="number" id="totalCargo" placeholder="50000"></div></div>
+        <button id="addVesselBtn">💾 ADD VESSEL</button>
+        <div id="vesselList" class="list-box"></div>
+    </div>
+
+    <!-- NOTEBOOK 1 -->
+    <div class="card">
+        <div class="card-header">📋 NOTEBOOK (Paste Message Here)</div>
+        <textarea id="notebook1" rows="4" placeholder="Paste your message here..."></textarea>
+        <button id="autoFillBtn" class="auto-fill-btn">🔍 AUTO FILL</button>
+    </div>
+
+    <!-- ALONGSIDE MESSAGE -->
+    <div class="card">
+        <div class="card-header">⏱️ ALONGSIDE MESSAGE</div>
+        <div class="field"><label>VESSEL</label><select id="alongVesselSelect"></select></div>
+        <div class="row2"><div><label>LIGHTER</label><input id="alongLighter"></div><div><label>MASTER</label><input id="alongMaster"></div></div>
+        <div class="row2"><div><label>MOBILE</label><input id="alongMobile"></div><div><label>CAPACITY</label><input id="alongCapacity" type="number"></div></div>
+        <div class="row2"><div><label>A/C</label><input id="alongAC"></div><div><label>PLACE</label><input id="alongPlace" value="KUTUBDIA"></div></div>
+        <div class="row2"><div><label>ALONGSIDE TIME</label><input id="alongTime"></div><div><label>DIS COMMENCE</label><input id="alongCommence"></div></div>
+        <button id="generateAlongsideBtn">⚡ GENERATE</button>
+        <div id="alongsideOutput" class="output">—</div>
+        <button class="copy-btn" id="copyAlongBtn">📋 COPY</button>
+        <div id="alongsideListBox" class="list-box"></div>
+    </div>
+
+    <!-- CAST OFF MESSAGE -->
+    <div class="card">
+        <div class="card-header">⛓️ CAST OFF MESSAGE</div>
+        <div class="field"><label>VESSEL</label><select id="castVesselSelect"></select></div>
+        <div class="field"><label>LIGHTER</label><select id="castLighterSelect"></select></div>
+        <div class="row2"><div><label>PLACE</label><input id="castPlace" readonly></div><div><label>ALONGSIDE</label><input id="castAlongTime" readonly></div></div>
+        <div class="row2"><div><label>DIS COMMENCE</label><input id="castCommence" readonly></div><div><label>CAPACITY</label><input id="castCapacity" readonly></div></div>
+        <div class="row2"><div><label>A/C</label><input id="castAC"></div><div><label>DIS COMPLETED</label><input id="castCompleted"></div></div>
+        <div class="row2"><div><label>CAST OFF TIME</label><input id="castOffTime"></div><div><label>CARGO HOLD</label><input id="castHold"></div></div>
+        <button id="generateCastBtn">⚙️ GENERATE</button>
+        <div id="castOutput" class="output">—</div>
+        <button class="copy-btn" id="copyCastBtn">📋 COPY</button>
+        <div id="castoffListBox" class="list-box"></div>
+    </div>
+
+    <!-- NOTEBOOK 2 (MORNING) -->
+    <div class="card">
+        <div class="card-header">📋 NOTEBOOK (Paste Morning Data Here)</div>
+        <textarea id="notebook2" rows="4" placeholder="Paste your morning data here..."></textarea>
+        <button id="autoFillMorningBtn" class="auto-fill-btn">🔍 AUTO FILL (Hatch & Last 24h)</button>
+    </div>
+
+    <!-- MORNING REPORT -->
+    <div class="card">
+        <div class="card-header">📊 MORNING REPORT</div>
+        <div class="row2"><div><label>DATE</label><input id="reportDate"></div><div><label>VESSEL</label><select id="reportVesselSelect"></select></div></div>
+        <div class="row2"><div><label>PLACE</label><input id="reportPlace" value="KUTUBDIA"></div><div><label>A/C</label><input id="reportAC"></div></div>
+        <div class="row2"><div><label>CARGO</label><input id="reportCargo" readonly></div><div><label>TOTAL</label><input id="reportTotal" readonly></div></div>
+        <div class="row3"><div><label>LAST 24H</label><input type="number" id="last24h"></div><div><label>PREVIOUS</label><input id="previousDis" readonly></div><div><label>TOTAL</label><input id="totalDis" readonly></div></div>
+        <div class="balance-box"><strong>⚖️ BALANCE (BOB)</strong><br><span id="balanceValue">0</span> MT</div>
+        <div><label>HATCH BALANCE</label><div class="row2"><input id="h1" placeholder="H.1"><input id="h2" placeholder="H.2"></div><div class="row2"><input id="h3" placeholder="H.3"><input id="h4" placeholder="H.4"></div><input id="h5" placeholder="H.5"></div>
+        <div id="hatchStatus" class="status-badge status-neutral">ℹ️ Enter hatch values</div>
+        <div id="kutubdiaList" class="list-box"></div>
+        <div id="outerList" class="list-box"></div>
+        <div id="morningAlongsideList" class="list-box"></div>
+        <div class="field"><label>SIGNATURE</label><input id="signature"></div>
+        <div class="field"><label>REMARKS</label><textarea id="remarks" rows="2"></textarea></div>
+        <button id="generateReportBtn">📄 GENERATE</button>
+        <div id="reportOutput" class="output">—</div>
+        <button class="copy-btn" id="copyReportBtn">📋 COPY</button>
+    </div>
+
+    <!-- REPORT HISTORY -->
+    <div class="card">
+        <div class="card-header">📚 REPORT HISTORY</div>
+        <div id="vesselReportButtons" class="history-container"></div>
+        <select id="historyVesselSelect"></select>
+        <div id="dayReportButtons" class="history-container"></div>
+        <div id="historyOutput" class="output">—</div>
+        <button class="copy-btn" id="copyHistoryBtn">📋 COPY</button>
+    </div>
+
+    <!-- DATA MANAGEMENT -->
+    <div class="card">
+        <div class="card-header">💾 DATA MANAGEMENT</div>
+        <div class="row2">
+            <button id="backupBtn">📁 BACKUP DATA</button>
+            <button id="restoreBtn">🔄 RESTORE DATA</button>
+        </div>
+        <button id="deleteAllBtn" class="delete-all-btn">🗑️ DELETE ALL DATA</button>
+    </div>
+
+    <div class="footer-credit">
+        <div class="footer-photo"><div class="small-photo">⚓</div><span>⚓ NH Vessel Cargo Distribution | Developed by Md Nurul Huda Hridoy</span></div>
+        <div>Lifetime Free | No Ads | No Expiry</div>
+    </div>
+    <div class="fixed-copy"><button class="copy-btn" id="globalCopyBtn" style="background:#2f8cbb;">📋 COPY ACTIVE OUTPUT</button></div>
+</div>
+
+<script>
+    (function() {
+        let vessels = JSON.parse(localStorage.getItem('vessels')) || [];
+        let alongsideLighters = JSON.parse(localStorage.getItem('alongsideLighters')) || [];
+        let castoffLighters = JSON.parse(localStorage.getItem('castoffLighters')) || [];
+        let serialCounter = parseInt(localStorage.getItem('serialCounter')) || 0;
+        let dailyDischarge = JSON.parse(localStorage.getItem('dailyDischarge')) || {};
+        let dailyReports = JSON.parse(localStorage.getItem('dailyReports')) || {};
+
+        function saveAll() {
+            localStorage.setItem('vessels', JSON.stringify(vessels));
+            localStorage.setItem('alongsideLighters', JSON.stringify(alongsideLighters));
+            localStorage.setItem('castoffLighters', JSON.stringify(castoffLighters));
+            localStorage.setItem('serialCounter', serialCounter);
+            localStorage.setItem('dailyDischarge', JSON.stringify(dailyDischarge));
+            localStorage.setItem('dailyReports', JSON.stringify(dailyReports));
+        }
+
+        function extractNumber(val) {
+            if (!val) return 0;
+            let match = val.toString().match(/(\d+(?:\.\d+)?)/);
+            return match ? parseFloat(match[1]) : 0;
+        }
+
+        function updateHatchStatus() {
+            let h1 = extractNumber(document.getElementById('h1').value);
+            let h2 = extractNumber(document.getElementById('h2').value);
+            let h3 = extractNumber(document.getElementById('h3').value);
+            let h4 = extractNumber(document.getElementById('h4').value);
+            let h5 = extractNumber(document.getElementById('h5').value);
+            let hatchTotal = h1 + h2 + h3 + h4 + h5;
+            let totalDis = parseFloat(document.getElementById('totalDis').value) || 0;
+            let statusDiv = document.getElementById('hatchStatus');
+            if (hatchTotal === 0 && totalDis === 0) {
+                statusDiv.innerHTML = 'ℹ️ No hatch data entered.';
+                statusDiv.className = 'status-badge status-neutral';
+            } else if (Math.abs(hatchTotal - totalDis) < 0.01) {
+                statusDiv.innerHTML = `✅ HATCH BALANCE MATCHED! Total: ${hatchTotal.toFixed(2)} MT`;
+                statusDiv.className = 'status-badge status-green';
+            } else {
+                statusDiv.innerHTML = `⚠️ WARNING: Hatch Total (${hatchTotal.toFixed(2)} MT) ≠ Total Discharge (${totalDis.toFixed(2)} MT)`;
+                statusDiv.className = 'status-badge status-red';
+            }
+        }
+
+        function refreshUI() {
+            // Update dropdowns
+            ['alongVesselSelect', 'castVesselSelect', 'reportVesselSelect', 'historyVesselSelect'].forEach(id => {
+                let sel = document.getElementById(id);
+                if (!sel) return;
+                let cur = sel.value;
+                sel.innerHTML = '<option value="">-- SELECT --</option>';
+                vessels.forEach(v => {
+                    let opt = document.createElement('option');
+                    opt.value = v.name;
+                    opt.textContent = v.name;
+                    sel.appendChild(opt);
+                });
+                if (cur && vessels.some(v => v.name === cur)) sel.value = cur;
+            });
+            
+            // Vessel List
+            let vlist = document.getElementById('vesselList');
+            if (vessels.length === 0) vlist.innerHTML = '<div class="list-item">— NO VESSELS —</div>';
+            else {
+                vlist.innerHTML = '';
+                vessels.forEach((v, i) => {
+                    let div = document.createElement('div');
+                    div.className = 'list-item';
+                    div.setAttribute('data-id', i);
+                    div.innerHTML = `<span>${v.name} | ${v.cargo} | ${v.totalQty} MT</span>
+                                    <div>
+                                        <button class="edit-small-btn" data-type="vessel" data-index="${i}">✏️</button>
+                                        <button class="delete-small-btn" data-type="vessel" data-index="${i}">🗑️</button>
+                                    </div>`;
+                    vlist.appendChild(div);
+                });
+            }
+            
+            // Alongside List
+            let alist = document.getElementById('alongsideListBox');
+            if (alongsideLighters.length === 0) alist.innerHTML = '<div class="list-item">— NO ALONGSIDE —</div>';
+            else {
+                alist.innerHTML = '';
+                alongsideLighters.forEach((l, i) => {
+                    let div = document.createElement('div');
+                    div.className = 'list-item';
+                    div.innerHTML = `<span>${l.name} | ${l.vessel} | ${l.place || 'KUTUBDIA'} | A/C:${l.ac || ''}</span>
+                                    <div>
+                                        <button class="edit-small-btn" data-type="alongside" data-index="${i}">✏️</button>
+                                        <button class="delete-small-btn" data-type="alongside" data-index="${i}">🗑️</button>
+                                    </div>`;
+                    alist.appendChild(div);
+                });
+            }
+            
+            // Cast Off List
+            let clist = document.getElementById('castoffListBox');
+            if (castoffLighters.length === 0) clist.innerHTML = '<div class="list-item">— NO CAST OFF —</div>';
+            else {
+                clist.innerHTML = '';
+                castoffLighters.forEach((l, idx) => {
+                    let div = document.createElement('div');
+                    div.className = 'list-item';
+                    div.innerHTML = `<span>${idx+1}. ${l.name} | ${l.vessel} | ${l.place || 'KUTUBDIA'} | A/C:${l.ac || ''}</span>
+                                    <div>
+                                        <button class="edit-small-btn" data-type="castoff" data-index="${idx}">✏️</button>
+                                        <button class="delete-small-btn" data-type="castoff" data-index="${idx}">🗑️</button>
+                                    </div>`;
+                    clist.appendChild(div);
+                });
+            }
+            
+            // Add click handlers for all edit/delete buttons
+            document.querySelectorAll('.edit-small-btn').forEach(btn => {
+                btn.onclick = function(e) {
+                    e.stopPropagation();
+                    let type = this.getAttribute('data-type');
+                    let idx = parseInt(this.getAttribute('data-index'));
+                    if(type === 'vessel') editVessel(idx);
+                    else if(type === 'alongside') editAlongside(idx);
+                    else if(type === 'castoff') editCastoff(idx);
+                };
+            });
+            document.querySelectorAll('.delete-small-btn').forEach(btn => {
+                btn.onclick = function(e) {
+                    e.stopPropagation();
+                    let type = this.getAttribute('data-type');
+                    let idx = parseInt(this.getAttribute('data-index'));
+                    if(type === 'vessel') deleteVessel(idx);
+                    else if(type === 'alongside') deleteAlongside(idx);
+                    else if(type === 'castoff') deleteCastoff(idx);
+                };
+            });
+            
+            // Cast Off Lighter Dropdown
+            let lighterSel = document.getElementById('castLighterSelect');
+            if (lighterSel) {
+                let vessel = document.getElementById('castVesselSelect').value;
+                lighterSel.innerHTML = '<option value="">-- SELECT --</option>';
+                let activeLighters = alongsideLighters.filter(l => l.vessel === vessel && !l.castoff);
+                activeLighters.forEach((l, i) => {
+                    let opt = document.createElement('option');
+                    opt.value = i;
+                    opt.textContent = `${l.name} (${l.place || 'KUTUBDIA'})`;
+                    opt.setAttribute('data-place', l.place || 'KUTUBDIA');
+                    opt.setAttribute('data-alongtime', l.alongside || '');
+                    opt.setAttribute('data-commence', l.commence || '');
+                    opt.setAttribute('data-capacity', l.capacity || '');
+                    opt.setAttribute('data-ac', l.ac || '');
+                    lighterSel.appendChild(opt);
+                });
+            }
+            
+            // Morning Report Lists
+            let selectedVessel = document.getElementById('reportVesselSelect').value;
+            if (selectedVessel) {
+                let vesselCastoff = castoffLighters.filter(l => l.vessel === selectedVessel);
+                let kutubdia = vesselCastoff.filter(l => (l.place || '').toUpperCase() === 'KUTUBDIA');
+                let outer = vesselCastoff.filter(l => (l.place || '').toUpperCase() !== 'KUTUBDIA');
+                let activeAlong = alongsideLighters.filter(l => l.vessel === selectedVessel && !l.castoff);
+                
+                document.getElementById('kutubdiaList').innerHTML = kutubdia.length ? kutubdia.map((l,i)=>`<div class="list-item">${i+1}. ${l.name} (A/C:${l.ac||''})</div>`).join('') : '<div class="list-item">— NONE —</div>';
+                document.getElementById('outerList').innerHTML = outer.length ? outer.map((l,i)=>`<div class="list-item">${i+1}. ${l.name} (A/C:${l.ac||''})</div>`).join('') : '<div class="list-item">— NONE —</div>';
+                document.getElementById('morningAlongsideList').innerHTML = activeAlong.length ? activeAlong.map(l=>`<div class="list-item">${l.name} (${l.place||'KUTUBDIA'}) A/C:${l.ac||''}</div>`).join('') : '<div class="list-item">N/L</div>';
+                
+                let vdata = vessels.find(v=>v.name===selectedVessel);
+                if(vdata) {
+                    document.getElementById('reportCargo').value = vdata.cargo;
+                    document.getElementById('reportTotal').value = vdata.totalQty;
+                }
+                let history = dailyDischarge[selectedVessel] || [];
+                let prev = history.reduce((a,b)=>a+b,0);
+                document.getElementById('previousDis').value = prev;
+                let last24 = parseFloat(document.getElementById('last24h').value) || 0;
+                document.getElementById('totalDis').value = prev + last24;
+                let balance = (vdata ? parseFloat(vdata.totalQty) : 0) - (prev + last24);
+                document.getElementById('balanceValue').innerText = balance.toFixed(2);
+                updateHatchStatus();
+            }
+            
+            // Vessel Report Buttons
+            let vReportDiv = document.getElementById('vesselReportButtons');
+            if (vessels.length === 0) vReportDiv.innerHTML = '<p>No vessels</p>';
+            else {
+                vReportDiv.innerHTML = '';
+                vessels.forEach(v => {
+                    let btn = document.createElement('button');
+                    btn.className = 'history-btn';
+                    btn.textContent = v.name;
+                    btn.onclick = () => showVesselReport(v.name);
+                    vReportDiv.appendChild(btn);
+                });
+            }
+            
+            // Day Report Buttons
+            let dayDiv = document.getElementById('dayReportButtons');
+            let histVessel = document.getElementById('historyVesselSelect').value;
+            if (!histVessel) dayDiv.innerHTML = '<p>Select vessel first</p>';
+            else {
+                let reports = dailyReports[histVessel] || [];
+                if (reports.length === 0) dayDiv.innerHTML = '<p>No daily reports</p>';
+                else {
+                    dayDiv.innerHTML = '';
+                    reports.forEach((r, i) => {
+                        let btn = document.createElement('button');
+                        btn.className = 'history-btn';
+                        btn.textContent = `Day ${i+1} (${r.date})`;
+                        btn.onclick = () => showDayReport(histVessel, i);
+                        dayDiv.appendChild(btn);
+                    });
+                }
+            }
+        }
+        
+        // ==================== EDIT/DELETE FUNCTIONS ====================
+        function editVessel(i) {
+            let v = vessels[i];
+            let n = prompt("Edit Vessel Name:", v.name); if(n && n.trim()) v.name = n.trim();
+            let c = prompt("Edit Cargo:", v.cargo); if(c && c.trim()) v.cargo = c.trim();
+            let t = prompt("Edit Total (MT):", v.totalQty); if(t && !isNaN(t)) v.totalQty = t;
+            saveAll(); refreshUI();
+        }
+        function editAlongside(i) {
+            let l = alongsideLighters[i];
+            let n = prompt("Edit Lighter Name:", l.name); if(n && n.trim()) l.name = n.trim();
+            let p = prompt("Edit Place:", l.place || 'KUTUBDIA'); if(p && p.trim()) l.place = p.trim().toUpperCase();
+            let ac = prompt("Edit A/C:", l.ac || ''); if(ac && ac.trim()) l.ac = ac.trim();
+            saveAll(); refreshUI();
+        }
+        function editCastoff(i) {
+            let l = castoffLighters[i];
+            let n = prompt("Edit Lighter Name:", l.name); if(n && n.trim()) l.name = n.trim();
+            let p = prompt("Edit Place:", l.place || 'KUTUBDIA'); if(p && p.trim()) l.place = p.trim().toUpperCase();
+            let ac = prompt("Edit A/C:", l.ac || ''); if(ac && ac.trim()) l.ac = ac.trim();
+            saveAll(); refreshUI();
+        }
+        function deleteVessel(i) { 
+            if(confirm("Delete this vessel?")) { 
+                vessels.splice(i,1); 
+                saveAll(); 
+                refreshUI(); 
+            } 
+        }
+        function deleteAlongside(i) { 
+            if(confirm("Delete this alongside?")) { 
+                alongsideLighters.splice(i,1); 
+                saveAll(); 
+                refreshUI(); 
+            } 
+        }
+        function deleteCastoff(i) { 
+            if(confirm("Delete this cast off?")) { 
+                castoffLighters.splice(i,1); 
+                saveAll(); 
+                refreshUI(); 
+            } 
+        }
+        
+        function showVesselReport(vesselName) {
+            let v = vessels.find(v=>v.name===vesselName);
+            let cast = castoffLighters.filter(l => l.vessel === vesselName);
+            let history = dailyDischarge[vesselName] || [];
+            let totalDis = history.reduce((a,b)=>a+b,0);
+            let balance = (v ? parseFloat(v.totalQty) : 0) - totalDis;
+            let kutubdia = cast.filter(l => (l.place || '').toUpperCase() === 'KUTUBDIA');
+            let outer = cast.filter(l => (l.place || '').toUpperCase() !== 'KUTUBDIA');
+            let report = `📋 VESSEL REPORT: ${vesselName}\n═══════════════════════════════\nCARGO: ${v?.cargo || '--'}\nTOTAL: ${v?.totalQty || '--'} MT\nTOTAL DISCHARGED: ${totalDis} MT\n⚖️ BALANCE: ${balance.toFixed(2)} MT\n═══════════════════════════════\n\n📦 KUTUBDIA COMPLETE:\n${kutubdia.map((l,i)=>`${i+1}. ${l.name}`).join('\n') || 'None'}\n\n🌊 OUTER COMPLETE:\n${outer.map((l,i)=>`${i+1}. ${l.name}`).join('\n') || 'None'}`;
+            document.getElementById('historyOutput').innerText = report;
+        }
+        
+        function showDayReport(vesselName, idx) {
+            let r = (dailyReports[vesselName] || [])[idx];
+            if (!r) return;
+            let report = `📅 DAY ${idx+1} REPORT - ${vesselName}\n═══════════════════════════════\nDate: ${r.date}\nLAST 24H: ${r.last24} MT\nTOTAL DISCHARGED: ${r.totalDis} MT\n⚖️ BALANCE: ${r.balance.toFixed(2)} MT\n\n✅ COMPLETED LIGHTERS:\n${r.completedLighters.map(l=>`- ${l.name} (${l.place || 'KUTUBDIA'})`).join('\n') || 'None'}\n\n⚓ ALONGSIDE LIGHTERS:\n${r.activeAlongside.map(l=>`- ${l.name} (${l.place || 'KUTUBDIA'})`).join('\n') || 'N/L'}\n\n📝 REMARKS: ${r.remarks || 'None'}`;
+            document.getElementById('historyOutput').innerText = report;
+        }
+
+        // ==================== EVENT HANDLERS ====================
+        document.getElementById('addVesselBtn').onclick = () => {
+            let name = document.getElementById('vesselName').value.trim();
+            let cargo = document.getElementById('cargoName').value.trim();
+            let total = document.getElementById('totalCargo').value;
+            if (!name || !cargo || !total) { alert("Fill all fields"); return; }
+            vessels.push({ name, cargo, totalQty: total });
+            saveAll(); refreshUI();
+            document.getElementById('vesselName').value = '';
+            document.getElementById('cargoName').value = '';
+            document.getElementById('totalCargo').value = '';
+            alert('✅ Vessel added');
+        };
+        
+        document.getElementById('generateAlongsideBtn').onclick = () => {
+            let vessel = document.getElementById('alongVesselSelect').value;
+            let lighter = document.getElementById('alongLighter').value.trim();
+            if (!vessel || !lighter) { alert("Select vessel and enter lighter"); return; }
+            alongsideLighters.push({
+                name: lighter, vessel: vessel,
+                master: document.getElementById('alongMaster').value,
+                mobile: document.getElementById('alongMobile').value,
+                capacity: document.getElementById('alongCapacity').value,
+                ac: document.getElementById('alongAC').value,
+                place: document.getElementById('alongPlace').value.trim().toUpperCase() || 'KUTUBDIA',
+                alongside: document.getElementById('alongTime').value,
+                commence: document.getElementById('alongCommence').value,
+                castoff: false
+            });
+            saveAll(); refreshUI();
+            document.getElementById('alongsideOutput').innerText = `${vessel}\n${lighter}\nPlace: ${document.getElementById('alongPlace').value}\nAlongside: ${document.getElementById('alongTime').value}\nDis Commence: ${document.getElementById('alongCommence').value}\nCapacity: ${document.getElementById('alongCapacity').value} MT\nA/C: ${document.getElementById('alongAC').value}`;
+            document.getElementById('alongLighter').value = '';
+        };
+        
+        document.getElementById('castLighterSelect').onchange = function() {
+            let idx = this.value;
+            if (idx === "") return;
+            let l = alongsideLighters[idx];
+            if (l) {
+                document.getElementById('castPlace').value = l.place || 'KUTUBDIA';
+                document.getElementById('castAlongTime').value = l.alongside || '';
+                document.getElementById('castCommence').value = l.commence || '';
+                document.getElementById('castCapacity').value = l.capacity || '';
+                document.getElementById('castAC').value = l.ac || '';
+            }
+        };
+        
+        document.getElementById('generateCastBtn').onclick = () => {
+            let vessel = document.getElementById('castVesselSelect').value;
+            let idx = document.getElementById('castLighterSelect').value;
+            if (!vessel || idx === "") { alert("Select vessel and lighter"); return; }
+            let lighter = alongsideLighters[idx];
+            if (!lighter) return;
+            serialCounter++;
+            castoffLighters.push({ 
+                name: lighter.name, vessel: vessel, serial: serialCounter,
+                place: lighter.place || 'KUTUBDIA',
+                ac: document.getElementById('castAC').value || lighter.ac || '',
+                alongside: lighter.alongside, commence: lighter.commence, capacity: lighter.capacity
+            });
+            lighter.castoff = true;
+            saveAll(); refreshUI();
+            document.getElementById('castOutput').innerText = `${serialCounter}. ${vessel}\n${lighter.name}\nPlace: ${document.getElementById('castPlace').value}\nAlongside: ${document.getElementById('castAlongTime').value}\nDis Commence: ${document.getElementById('castCommence').value}\nDis Completed: ${document.getElementById('castCompleted').value}\nCast Off: ${document.getElementById('castOffTime').value}\nCargo Hold: ${document.getElementById('castHold').value}\nCapacity: ${document.getElementById('castCapacity').value} MT\nA/C: ${document.getElementById('castAC').value}\nStatus: Completed & Cast Off`;
+        };
+        
+        // AUTO FILL
+        document.getElementById('autoFillBtn').onclick = () => {
+            let text = document.getElementById('notebook1').value;
+            let selectedVessel = document.getElementById('alongVesselSelect').value;
+            let lines = text.split('\n');
+            lines.forEach(line => {
+                if (line.match(/Mv\.|M\.V\.|MV\s/i) && selectedVessel) {
+                    let vesselSimple = selectedVessel.replace(/Mv\.|M\.V\.|MV\s/gi, '').trim().toLowerCase();
+                    let lineSimple = line.replace(/Mv\.|M\.V\.|MV\s/gi, '').trim().toLowerCase();
+                    if (lineSimple !== vesselSimple) {
+                        document.getElementById('alongLighter').value = line.trim();
+                    }
+                }
+            });
+            let mobileMatch = text.match(/(01[3-9]\d{8})|(01[3-9]\d-\d{7})/);
+            if (mobileMatch) document.getElementById('alongMobile').value = mobileMatch[0];
+            let capacityMatch = text.match(/(\d{3,5})\s*(?:MT|Mts)/i);
+            if (capacityMatch) document.getElementById('alongCapacity').value = capacityMatch[1];
+            let acMatch = text.match(/(?:A\/c\.|A\/C\.)[:\s]*([^\n,]+)/i);
+            if (acMatch) document.getElementById('alongAC').value = acMatch[1].trim();
+            if (text.toUpperCase().includes('OUTER')) document.getElementById('alongPlace').value = 'OUTER';
+            alert('✅ Auto-filled!');
+        };
+        
+        // AUTO FILL MORNING
+        document.getElementById('autoFillMorningBtn').onclick = () => {
+            let text = document.getElementById('notebook2').value;
+            let lines = text.split('\n');
+            lines.forEach(line => {
+                if (line.match(/H1|H\.1/i)) {
+                    let val = extractNumber(line);
+                    if (val) document.getElementById('h1').value = val;
+                } else if (line.match(/H2|H\.2/i)) {
+                    let val = extractNumber(line);
+                    if (val) document.getElementById('h2').value = val;
+                } else if (line.match(/H3|H\.3/i)) {
+                    let val = extractNumber(line);
+                    if (val) document.getElementById('h3').value = val;
+                } else if (line.match(/H4|H\.4/i)) {
+                    let val = extractNumber(line);
+                    if (val) document.getElementById('h4').value = val;
+                } else if (line.match(/H5|H\.5/i)) {
+                    let val = extractNumber(line);
+                    if (val) document.getElementById('h5').value = val;
+                } else if (line.match(/Last24h|Last 24h|last24/i)) {
+                    let val = extractNumber(line);
+                    if (val) document.getElementById('last24h').value = val;
+                }
+            });
+            let vessel = document.getElementById('reportVesselSelect').value;
+            let vdata = vessels.find(v=>v.name===vessel);
+            let history = dailyDischarge[vessel] || [];
+            let prev = history.reduce((a,b)=>a+b,0);
+            document.getElementById('previousDis').value = prev;
+            let last24 = parseFloat(document.getElementById('last24h').value) || 0;
+            document.getElementById('totalDis').value = prev + last24;
+            let balance = (vdata ? parseFloat(vdata.totalQty) : 0) - (prev + last24);
+            document.getElementById('balanceValue').innerText = balance.toFixed(2);
+            updateHatchStatus();
+            alert('✅ Auto-filled hatch & last24h!');
+        };
+        
+        document.getElementById('generateReportBtn').onclick = () => {
+            let vessel = document.getElementById('reportVesselSelect').value;
+            if (!vessel) { alert("Select vessel"); return; }
+            let date = document.getElementById('reportDate').value || new Date().toLocaleDateString();
+            let last24 = parseFloat(document.getElementById('last24h').value) || 0;
+            let vdata = vessels.find(v => v.name === vessel);
+            let history = dailyDischarge[vessel] || [];
+            let prev = history.reduce((a,b)=>a+b,0);
+            let totalDis = prev + last24;
+            let balance = (vdata ? parseFloat(vdata.totalQty) : 0) - totalDis;
+            
+            if (last24 > 0) { history.push(last24); dailyDischarge[vessel] = history; saveAll(); }
+            
+            let h1 = extractNumber(document.getElementById('h1').value);
+            let h2 = extractNumber(document.getElementById('h2').value);
+            let h3 = extractNumber(document.getElementById('h3').value);
+            let h4 = extractNumber(document.getElementById('h4').value);
+            let h5 = extractNumber(document.getElementById('h5').value);
+            let hatchTotal = h1 + h2 + h3 + h4 + h5;
+            updateHatchStatus();
+            
+            let castoffForVessel = castoffLighters.filter(l => l.vessel === vessel);
+            let kutubdia = castoffForVessel.filter(l => (l.place || '').toUpperCase() === 'KUTUBDIA');
+            let outer = castoffForVessel.filter(l => (l.place || '').toUpperCase() !== 'KUTUBDIA');
+            let activeAlong = alongsideLighters.filter(l => l.vessel === vessel && !l.castoff);
+            
+            dailyReports[vessel] = dailyReports[vessel] || [];
+            dailyReports[vessel].push({ date, last24, totalDis, balance, remarks: document.getElementById('remarks').value, activeAlongside: activeAlong.map(l=>({name:l.name, place:l.place, ac:l.ac})), completedLighters: castoffForVessel.map(l=>({name:l.name, place:l.place, ac:l.ac})) });
+            saveAll();
+            
+            let hatchDisplay = hatchTotal > 0 ? `\nHATCH BALANCE:\nH1: ${h1} MT\nH2: ${h2} MT\nH3: ${h3} MT\nH4: ${h4} MT\nH5: ${h5} MT\nTotal: ${hatchTotal.toFixed(2)} MT\n\n` : '';
+            let remarksDisplay = document.getElementById('remarks').value ? `\nREMARKS:\n${document.getElementById('remarks').value}\n` : '';
+            
+            let report = `MORNING REPORT - ${vessel}\nDate: ${date} | Place: ${document.getElementById('reportPlace').value}\nCargo: ${vdata?.cargo || '--'} | Total: ${vdata?.totalQty || '--'} MT\nLAST 24H: ${last24} MT | PREVIOUS: ${prev} MT | TOTAL: ${totalDis} MT\n⚖️ BALANCE: ${balance.toFixed(2)} MT${hatchDisplay}KUTUBDIA COMPLETE:\n${kutubdia.map((l,i)=>`${i+1}. ${l.name} (A/C:${l.ac||''})`).join('\n') || 'None'}\n\nOUTER COMPLETE:\n${outer.map((l,i)=>`${i+1}. ${l.name} (A/C:${l.ac||''})`).join('\n') || 'None'}\n\nALONGSIDE:\n${activeAlong.map(l=>`${l.name} (${l.place||'KUTUBDIA'}) A/C:${l.ac||''}`).join('\n') || 'N/L'}${remarksDisplay}\n${document.getElementById('signature').value || '--'}`;
+            document.getElementById('reportOutput').innerText = report;
+            refreshUI();
+        };
+        
+        // ==================== COPY FUNCTIONS ====================
+        function copyOutput(id) {
+            let text = document.getElementById(id).innerText;
+            if (!text || text === '—') { alert("Nothing to copy"); return; }
+            navigator.clipboard.writeText(text).then(()=>alert("✅ Copied!")).catch(()=>alert("Select and copy manually"));
+        }
+        document.getElementById('copyAlongBtn').onclick = () => copyOutput('alongsideOutput');
+        document.getElementById('copyCastBtn').onclick = () => copyOutput('castOutput');
+        document.getElementById('copyReportBtn').onclick = () => copyOutput('reportOutput');
+        document.getElementById('copyHistoryBtn').onclick = () => copyOutput('historyOutput');
+        document.getElementById('globalCopyBtn').onclick = () => {
+            let outputs = ['alongsideOutput','castOutput','reportOutput','historyOutput'];
+            for(let id of outputs) if(document.getElementById(id).innerText !== '—') { copyOutput(id); return; }
+            alert("No output to copy");
+        };
+        
+        // ==================== BACKUP/RESTORE/DELETE ALL ====================
+        document.getElementById('backupBtn').onclick = () => {
+            const data = { vessels, alongsideLighters, castoffLighters, serialCounter, dailyDischarge, dailyReports };
+            const json = JSON.stringify(data);
+            const blob = new Blob([json], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `nh_vessel_backup_${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            alert('✅ Backup saved!');
+        };
+        document.getElementById('restoreBtn').onclick = () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'application/json';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    try {
+                        const data = JSON.parse(ev.target.result);
+                        vessels = data.vessels || [];
+                        alongsideLighters = data.alongsideLighters || [];
+                        castoffLighters = data.castoffLighters || [];
+                        serialCounter = data.serialCounter || 0;
+                        dailyDischarge = data.dailyDischarge || {};
+                        dailyReports = data.dailyReports || {};
+                        saveAll(); refreshUI();
+                        alert('✅ Data restored!');
+                    } catch(e) { alert('Invalid backup file'); }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        };
+        document.getElementById('deleteAllBtn').onclick = () => {
+            if(confirm("⚠️ DELETE ALL DATA? This cannot be undone!")) {
+                vessels = [];
+                alongsideLighters = [];
+                castoffLighters = [];
+                serialCounter = 0;
+                dailyDischarge = {};
+                dailyReports = {};
+                localStorage.removeItem('vessels');
+                localStorage.removeItem('alongsideLighters');
+                localStorage.removeItem('castoffLighters');
+                localStorage.removeItem('serialCounter');
+                localStorage.removeItem('dailyDischarge');
+                localStorage.removeItem('dailyReports');
+                refreshUI();
+                alert('✅ All data deleted!');
+            }
+        };
+        
+        // ==================== EVENT LISTENERS ====================
+        document.getElementById('castVesselSelect').onchange = () => refreshUI();
+        document.getElementById('reportVesselSelect').onchange = () => refreshUI();
+        document.getElementById('historyVesselSelect').onchange = () => refreshUI();
+        document.getElementById('last24h').oninput = () => {
+            let vessel = document.getElementById('reportVesselSelect').value;
+            let vdata = vessels.find(v=>v.name===vessel);
+            let history = dailyDischarge[vessel] || [];
+            let prev = history.reduce((a,b)=>a+b,0);
+            document.getElementById('previousDis').value = prev;
+            let last24 = parseFloat(document.getElementById('last24h').value) || 0;
+            document.getElementById('totalDis').value = prev + last24;
+            let balance = (vdata ? parseFloat(vdata.totalQty) : 0) - (prev + last24);
+            document.getElementById('balanceValue').innerText = balance.toFixed(2);
+            updateHatchStatus();
+        };
+        ['h1','h2','h3','h4','h5'].forEach(id => {
+            document.getElementById(id).oninput = () => {
+                let vessel = document.getElementById('reportVesselSelect').value;
+                let vdata = vessels.find(v=>v.name===vessel);
+                let history = dailyDischarge[vessel] || [];
+                let prev = history.reduce((a,b)=>a+b,0);
+                let last24 = parseFloat(document.getElementById('last24h').value) || 0;
+                let totalDis = prev + last24;
+                let balance = (vdata ? parseFloat(vdata.totalQty) : 0) - totalDis;
+                document.getElementById('balanceValue').innerText = balance.toFixed(2);
+                updateHatchStatus();
+            };
+        });
+        
+        refreshUI();
+    })();
+</script>
+</body>
+</html>
