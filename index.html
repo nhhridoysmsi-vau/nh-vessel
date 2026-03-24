@@ -10,7 +10,7 @@
         .container { max-width: 520px; margin: 0 auto; }
         .app-header { text-align: center; margin-bottom: 20px; padding: 15px; background: linear-gradient(135deg, #132433, #0e1a28); border-radius: 30px; border: 1px solid #2f8cbb; }
         .developer-info { display: flex; align-items: center; justify-content: center; gap: 15px; flex-wrap: wrap; }
-        .developer-photo { width: 65px; height: 65px; border-radius: 50%; border: 3px solid #2f8cbb; background: #1d3143; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: #2f8cbb; }
+        .developer-photo { width: 65px; height: 65px; border-radius: 50%; border: 3px solid #2f8cbb; object-fit: cover; background: #1d3143; }
         .developer-text h1 { font-size: 1.5rem; color: #c9e2ff; border: none; padding: 0; margin: 0; }
         .developer-text .credit { font-size: 0.75rem; color: #7aa9c4; margin-top: 5px; }
         .card { background: #132433; border-radius: 28px; padding: 20px 18px; margin-bottom: 24px; border: 1px solid #2e5470; }
@@ -37,7 +37,7 @@
         .history-container { display: flex; flex-wrap: wrap; gap: 8px; margin: 15px 0; }
         .footer-credit { text-align: center; padding: 15px; margin-top: 10px; font-size: 0.7rem; color: #5a7b9c; border-top: 1px solid #2e5470; }
         .footer-photo { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 5px; }
-        .small-photo { width: 30px; height: 30px; border-radius: 50%; border: 1px solid #2f8cbb; background: #1d3143; }
+        .small-photo { width: 30px; height: 30px; border-radius: 50%; border: 1px solid #2f8cbb; object-fit: cover; background: #1d3143; }
         .balance-box { background: #1e3a5f; padding: 12px; border-radius: 20px; text-align: center; margin: 15px 0; border-left: 5px solid #4caf50; }
         .auto-fill-btn { background: #2f8cbb; margin-top: 8px; padding: 10px; font-size: 0.9rem; }
         .delete-all-btn { background: #a13e3e; margin-top: 10px; border-bottom-color: #6b2e2e; }
@@ -47,7 +47,8 @@
 <div class="container">
     <div class="app-header">
         <div class="developer-info">
-            <div class="developer-photo">⚓</div>
+            <!-- আপনার ছবি -->
+            <img class="developer-photo" src="profile.jpg" alt="Md Nurul Huda Hridoy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'45\' fill=\'%232f8cbb\'/%3E%3Ctext x=\'50\' y=\'70\' font-size=\'40\' text-anchor=\'middle\' fill=\'white\'%3E⚓%3C/text%3E%3C/svg%3E'">
             <div class="developer-text">
                 <h1>⚓ NH VESSEL CARGO DISTRIBUTION</h1>
                 <div class="credit">Developed by <strong>Md Nurul Huda Hridoy</strong></div>
@@ -71,29 +72,31 @@
         <button id="autoFillBtn" class="auto-fill-btn">🔍 AUTO FILL</button>
     </div>
 
-    <!-- ALONGSIDE MESSAGE -->
+    <!-- ALONGSIDE MESSAGE (M No: যোগ করা হয়েছে, খালি ঘর সরানো) -->
     <div class="card">
         <div class="card-header">⏱️ ALONGSIDE MESSAGE</div>
         <div class="field"><label>VESSEL</label><select id="alongVesselSelect"></select></div>
         <div class="row2"><div><label>LIGHTER</label><input id="alongLighter"></div><div><label>MASTER</label><input id="alongMaster"></div></div>
         <div class="row2"><div><label>MOBILE</label><input id="alongMobile"></div><div><label>CAPACITY</label><input id="alongCapacity" type="number"></div></div>
-        <div class="row2"><div><label>A/C</label><input id="alongAC"></div><div><label>PLACE</label><input id="alongPlace" value="KUTUBDIA"></div></div>
-        <div class="row2"><div><label>ALONGSIDE TIME</label><input id="alongTime"></div><div><label>DIS COMMENCE</label><input id="alongCommence"></div></div>
+        <div class="row2"><div><label>A/C</label><input id="alongAC"></div><div><label>M No:</label><input id="alongMNo" placeholder="e.g. 12345"></div></div>
+        <div class="row2"><div><label>PLACE</label><input id="alongPlace" value="KUTUBDIA"></div><div><label>ALONGSIDE TIME</label><input id="alongTime"></div></div>
+        <div class="row2"><div><label>DIS COMMENCE</label><input id="alongCommence"></div><div></div></div>
         <button id="generateAlongsideBtn">⚡ GENERATE</button>
         <div id="alongsideOutput" class="output">—</div>
         <button class="copy-btn" id="copyAlongBtn">📋 COPY</button>
         <div id="alongsideListBox" class="list-box"></div>
     </div>
 
-    <!-- CAST OFF MESSAGE -->
+    <!-- CAST OFF MESSAGE (M No: যোগ করা হয়েছে) -->
     <div class="card">
         <div class="card-header">⛓️ CAST OFF MESSAGE</div>
         <div class="field"><label>VESSEL</label><select id="castVesselSelect"></select></div>
         <div class="field"><label>LIGHTER</label><select id="castLighterSelect"></select></div>
         <div class="row2"><div><label>PLACE</label><input id="castPlace" readonly></div><div><label>ALONGSIDE</label><input id="castAlongTime" readonly></div></div>
         <div class="row2"><div><label>DIS COMMENCE</label><input id="castCommence" readonly></div><div><label>CAPACITY</label><input id="castCapacity" readonly></div></div>
-        <div class="row2"><div><label>A/C</label><input id="castAC"></div><div><label>DIS COMPLETED</label><input id="castCompleted"></div></div>
-        <div class="row2"><div><label>CAST OFF TIME</label><input id="castOffTime"></div><div><label>CARGO HOLD</label><input id="castHold"></div></div>
+        <div class="row2"><div><label>A/C</label><input id="castAC"></div><div><label>M No:</label><input id="castMNo" placeholder="Auto from alongside or type manually"></div></div>
+        <div class="row2"><div><label>DIS COMPLETED</label><input id="castCompleted"></div><div><label>CAST OFF TIME</label><input id="castOffTime"></div></div>
+        <div class="row2"><div><label>CARGO HOLD</label><input id="castHold"></div><div></div></div>
         <button id="generateCastBtn">⚙️ GENERATE</button>
         <div id="castOutput" class="output">—</div>
         <button class="copy-btn" id="copyCastBtn">📋 COPY</button>
@@ -148,7 +151,7 @@
     </div>
 
     <div class="footer-credit">
-        <div class="footer-photo"><div class="small-photo">⚓</div><span>⚓ NH Vessel Cargo Distribution | Developed by Md Nurul Huda Hridoy</span></div>
+        <div class="footer-photo"><img class="small-photo" src="profile.jpg" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'45\' fill=\'%232f8cbb\'/%3E%3Ctext x=\'50\' y=\'70\' font-size=\'40\' text-anchor=\'middle\' fill=\'white\'%3E⚓%3C/text%3E%3C/svg%3E'"><span>⚓ NH Vessel Cargo Distribution | Developed by Md Nurul Huda Hridoy</span></div>
         <div>Lifetime Free | No Ads | No Expiry</div>
     </div>
     <div class="fixed-copy"><button class="copy-btn" id="globalCopyBtn" style="background:#2f8cbb;">📋 COPY ACTIVE OUTPUT</button></div>
@@ -241,7 +244,7 @@
                 alongsideLighters.forEach((l, i) => {
                     let div = document.createElement('div');
                     div.className = 'list-item';
-                    div.innerHTML = `<span>${l.name} | ${l.vessel} | ${l.place || 'KUTUBDIA'} | A/C:${l.ac || ''}</span>
+                    div.innerHTML = `<span>${l.name} | ${l.vessel} | ${l.place || 'KUTUBDIA'} | A/C:${l.ac || ''} | M No:${l.mno || ''}</span>
                                     <div>
                                         <button class="edit-small-btn" data-type="alongside" data-index="${i}">✏️</button>
                                         <button class="delete-small-btn" data-type="alongside" data-index="${i}">🗑️</button>
@@ -258,7 +261,7 @@
                 castoffLighters.forEach((l, idx) => {
                     let div = document.createElement('div');
                     div.className = 'list-item';
-                    div.innerHTML = `<span>${idx+1}. ${l.name} | ${l.vessel} | ${l.place || 'KUTUBDIA'} | A/C:${l.ac || ''}</span>
+                    div.innerHTML = `<span>${idx+1}. ${l.name} | ${l.vessel} | ${l.place || 'KUTUBDIA'} | A/C:${l.ac || ''} | M No:${l.mno || ''}</span>
                                     <div>
                                         <button class="edit-small-btn" data-type="castoff" data-index="${idx}">✏️</button>
                                         <button class="delete-small-btn" data-type="castoff" data-index="${idx}">🗑️</button>
@@ -304,6 +307,7 @@
                     opt.setAttribute('data-commence', l.commence || '');
                     opt.setAttribute('data-capacity', l.capacity || '');
                     opt.setAttribute('data-ac', l.ac || '');
+                    opt.setAttribute('data-mno', l.mno || '');
                     lighterSel.appendChild(opt);
                 });
             }
@@ -316,9 +320,9 @@
                 let outer = vesselCastoff.filter(l => (l.place || '').toUpperCase() !== 'KUTUBDIA');
                 let activeAlong = alongsideLighters.filter(l => l.vessel === selectedVessel && !l.castoff);
                 
-                document.getElementById('kutubdiaList').innerHTML = kutubdia.length ? kutubdia.map((l,i)=>`<div class="list-item">${i+1}. ${l.name} (A/C:${l.ac||''})</div>`).join('') : '<div class="list-item">— NONE —</div>';
-                document.getElementById('outerList').innerHTML = outer.length ? outer.map((l,i)=>`<div class="list-item">${i+1}. ${l.name} (A/C:${l.ac||''})</div>`).join('') : '<div class="list-item">— NONE —</div>';
-                document.getElementById('morningAlongsideList').innerHTML = activeAlong.length ? activeAlong.map(l=>`<div class="list-item">${l.name} (${l.place||'KUTUBDIA'}) A/C:${l.ac||''}</div>`).join('') : '<div class="list-item">N/L</div>';
+                document.getElementById('kutubdiaList').innerHTML = kutubdia.length ? kutubdia.map((l,i)=>`<div class="list-item">${i+1}. ${l.name} (A/C:${l.ac||''}) M No:${l.mno||''}</div>`).join('') : '<div class="list-item">— NONE —</div>';
+                document.getElementById('outerList').innerHTML = outer.length ? outer.map((l,i)=>`<div class="list-item">${i+1}. ${l.name} (A/C:${l.ac||''}) M No:${l.mno||''}</div>`).join('') : '<div class="list-item">— NONE —</div>';
+                document.getElementById('morningAlongsideList').innerHTML = activeAlong.length ? activeAlong.map(l=>`<div class="list-item">${l.name} (${l.place||'KUTUBDIA'}) A/C:${l.ac||''} M No:${l.mno||''}</div>`).join('') : '<div class="list-item">N/L</div>';
                 
                 let vdata = vessels.find(v=>v.name===selectedVessel);
                 if(vdata) {
@@ -382,6 +386,7 @@
             let n = prompt("Edit Lighter Name:", l.name); if(n && n.trim()) l.name = n.trim();
             let p = prompt("Edit Place:", l.place || 'KUTUBDIA'); if(p && p.trim()) l.place = p.trim().toUpperCase();
             let ac = prompt("Edit A/C:", l.ac || ''); if(ac && ac.trim()) l.ac = ac.trim();
+            let mno = prompt("Edit M No:", l.mno || ''); if(mno && mno.trim()) l.mno = mno.trim();
             saveAll(); refreshUI();
         }
         function editCastoff(i) {
@@ -389,6 +394,7 @@
             let n = prompt("Edit Lighter Name:", l.name); if(n && n.trim()) l.name = n.trim();
             let p = prompt("Edit Place:", l.place || 'KUTUBDIA'); if(p && p.trim()) l.place = p.trim().toUpperCase();
             let ac = prompt("Edit A/C:", l.ac || ''); if(ac && ac.trim()) l.ac = ac.trim();
+            let mno = prompt("Edit M No:", l.mno || ''); if(mno && mno.trim()) l.mno = mno.trim();
             saveAll(); refreshUI();
         }
         function deleteVessel(i) { 
@@ -421,14 +427,14 @@
             let balance = (v ? parseFloat(v.totalQty) : 0) - totalDis;
             let kutubdia = cast.filter(l => (l.place || '').toUpperCase() === 'KUTUBDIA');
             let outer = cast.filter(l => (l.place || '').toUpperCase() !== 'KUTUBDIA');
-            let report = `📋 VESSEL REPORT: ${vesselName}\n═══════════════════════════════\nCARGO: ${v?.cargo || '--'}\nTOTAL: ${v?.totalQty || '--'} MT\nTOTAL DISCHARGED: ${totalDis} MT\n⚖️ BALANCE: ${balance.toFixed(2)} MT\n═══════════════════════════════\n\n📦 KUTUBDIA COMPLETE:\n${kutubdia.map((l,i)=>`${i+1}. ${l.name}`).join('\n') || 'None'}\n\n🌊 OUTER COMPLETE:\n${outer.map((l,i)=>`${i+1}. ${l.name}`).join('\n') || 'None'}`;
+            let report = `📋 VESSEL REPORT: ${vesselName}\n═══════════════════════════════\nCARGO: ${v?.cargo || '--'}\nTOTAL: ${v?.totalQty || '--'} MT\nTOTAL DISCHARGED: ${totalDis} MT\n⚖️ BALANCE: ${balance.toFixed(2)} MT\n═══════════════════════════════\n\n📦 KUTUBDIA COMPLETE:\n${kutubdia.map((l,i)=>`${i+1}. ${l.name} (A/C:${l.ac||''}) M No:${l.mno||''}`).join('\n') || 'None'}\n\n🌊 OUTER COMPLETE:\n${outer.map((l,i)=>`${i+1}. ${l.name} (A/C:${l.ac||''}) M No:${l.mno||''}`).join('\n') || 'None'}`;
             document.getElementById('historyOutput').innerText = report;
         }
         
         function showDayReport(vesselName, idx) {
             let r = (dailyReports[vesselName] || [])[idx];
             if (!r) return;
-            let report = `📅 DAY ${idx+1} REPORT - ${vesselName}\n═══════════════════════════════\nDate: ${r.date}\nLAST 24H: ${r.last24} MT\nTOTAL DISCHARGED: ${r.totalDis} MT\n⚖️ BALANCE: ${r.balance.toFixed(2)} MT\n\n✅ COMPLETED LIGHTERS:\n${r.completedLighters.map(l=>`- ${l.name} (${l.place || 'KUTUBDIA'})`).join('\n') || 'None'}\n\n⚓ ALONGSIDE LIGHTERS:\n${r.activeAlongside.map(l=>`- ${l.name} (${l.place || 'KUTUBDIA'})`).join('\n') || 'N/L'}\n\n📝 REMARKS: ${r.remarks || 'None'}`;
+            let report = `📅 DAY ${idx+1} REPORT - ${vesselName}\n═══════════════════════════════\nDate: ${r.date}\nLAST 24H: ${r.last24} MT\nTOTAL DISCHARGED: ${r.totalDis} MT\n⚖️ BALANCE: ${r.balance.toFixed(2)} MT\n\n✅ COMPLETED LIGHTERS:\n${r.completedLighters.map(l=>`- ${l.name} (${l.place || 'KUTUBDIA'}) A/C:${l.ac||''} M No:${l.mno||''}`).join('\n') || 'None'}\n\n⚓ ALONGSIDE LIGHTERS:\n${r.activeAlongside.map(l=>`- ${l.name} (${l.place || 'KUTUBDIA'}) A/C:${l.ac||''} M No:${l.mno||''}`).join('\n') || 'N/L'}\n\n📝 REMARKS: ${r.remarks || 'None'}`;
             document.getElementById('historyOutput').innerText = report;
         }
 
@@ -456,13 +462,14 @@
                 mobile: document.getElementById('alongMobile').value,
                 capacity: document.getElementById('alongCapacity').value,
                 ac: document.getElementById('alongAC').value,
+                mno: document.getElementById('alongMNo').value,
                 place: document.getElementById('alongPlace').value.trim().toUpperCase() || 'KUTUBDIA',
                 alongside: document.getElementById('alongTime').value,
                 commence: document.getElementById('alongCommence').value,
                 castoff: false
             });
             saveAll(); refreshUI();
-            document.getElementById('alongsideOutput').innerText = `${vessel}\n${lighter}\nPlace: ${document.getElementById('alongPlace').value}\nAlongside: ${document.getElementById('alongTime').value}\nDis Commence: ${document.getElementById('alongCommence').value}\nCapacity: ${document.getElementById('alongCapacity').value} MT\nA/C: ${document.getElementById('alongAC').value}`;
+            document.getElementById('alongsideOutput').innerText = `${vessel}\n${lighter}\nPlace: ${document.getElementById('alongPlace').value}\nAlongside: ${document.getElementById('alongTime').value}\nDis Commence: ${document.getElementById('alongCommence').value}\nCapacity: ${document.getElementById('alongCapacity').value} MT\nA/C: ${document.getElementById('alongAC').value}\nM No: ${document.getElementById('alongMNo').value}`;
             document.getElementById('alongLighter').value = '';
         };
         
@@ -476,6 +483,7 @@
                 document.getElementById('castCommence').value = l.commence || '';
                 document.getElementById('castCapacity').value = l.capacity || '';
                 document.getElementById('castAC').value = l.ac || '';
+                document.getElementById('castMNo').value = l.mno || '';
             }
         };
         
@@ -490,11 +498,12 @@
                 name: lighter.name, vessel: vessel, serial: serialCounter,
                 place: lighter.place || 'KUTUBDIA',
                 ac: document.getElementById('castAC').value || lighter.ac || '',
+                mno: document.getElementById('castMNo').value || lighter.mno || '',
                 alongside: lighter.alongside, commence: lighter.commence, capacity: lighter.capacity
             });
             lighter.castoff = true;
             saveAll(); refreshUI();
-            document.getElementById('castOutput').innerText = `${serialCounter}. ${vessel}\n${lighter.name}\nPlace: ${document.getElementById('castPlace').value}\nAlongside: ${document.getElementById('castAlongTime').value}\nDis Commence: ${document.getElementById('castCommence').value}\nDis Completed: ${document.getElementById('castCompleted').value}\nCast Off: ${document.getElementById('castOffTime').value}\nCargo Hold: ${document.getElementById('castHold').value}\nCapacity: ${document.getElementById('castCapacity').value} MT\nA/C: ${document.getElementById('castAC').value}\nStatus: Completed & Cast Off`;
+            document.getElementById('castOutput').innerText = `${serialCounter}. ${vessel}\n${lighter.name}\nPlace: ${document.getElementById('castPlace').value}\nAlongside: ${document.getElementById('castAlongTime').value}\nDis Commence: ${document.getElementById('castCommence').value}\nDis Completed: ${document.getElementById('castCompleted').value}\nCast Off: ${document.getElementById('castOffTime').value}\nCargo Hold: ${document.getElementById('castHold').value}\nCapacity: ${document.getElementById('castCapacity').value} MT\nA/C: ${document.getElementById('castAC').value}\nM No: ${document.getElementById('castMNo').value}\nStatus: Completed & Cast Off`;
         };
         
         // AUTO FILL
@@ -517,6 +526,8 @@
             if (capacityMatch) document.getElementById('alongCapacity').value = capacityMatch[1];
             let acMatch = text.match(/(?:A\/c\.|A\/C\.)[:\s]*([^\n,]+)/i);
             if (acMatch) document.getElementById('alongAC').value = acMatch[1].trim();
+            let mnoMatch = text.match(/(?:M No\.|M No)[:\s]*([^\n,]+)/i);
+            if (mnoMatch) document.getElementById('alongMNo').value = mnoMatch[1].trim();
             if (text.toUpperCase().includes('OUTER')) document.getElementById('alongPlace').value = 'OUTER';
             alert('✅ Auto-filled!');
         };
@@ -586,13 +597,13 @@
             let activeAlong = alongsideLighters.filter(l => l.vessel === vessel && !l.castoff);
             
             dailyReports[vessel] = dailyReports[vessel] || [];
-            dailyReports[vessel].push({ date, last24, totalDis, balance, remarks: document.getElementById('remarks').value, activeAlongside: activeAlong.map(l=>({name:l.name, place:l.place, ac:l.ac})), completedLighters: castoffForVessel.map(l=>({name:l.name, place:l.place, ac:l.ac})) });
+            dailyReports[vessel].push({ date, last24, totalDis, balance, remarks: document.getElementById('remarks').value, activeAlongside: activeAlong.map(l=>({name:l.name, place:l.place, ac:l.ac, mno:l.mno})), completedLighters: castoffForVessel.map(l=>({name:l.name, place:l.place, ac:l.ac, mno:l.mno})) });
             saveAll();
             
             let hatchDisplay = hatchTotal > 0 ? `\nHATCH BALANCE:\nH1: ${h1} MT\nH2: ${h2} MT\nH3: ${h3} MT\nH4: ${h4} MT\nH5: ${h5} MT\nTotal: ${hatchTotal.toFixed(2)} MT\n\n` : '';
             let remarksDisplay = document.getElementById('remarks').value ? `\nREMARKS:\n${document.getElementById('remarks').value}\n` : '';
             
-            let report = `MORNING REPORT - ${vessel}\nDate: ${date} | Place: ${document.getElementById('reportPlace').value}\nCargo: ${vdata?.cargo || '--'} | Total: ${vdata?.totalQty || '--'} MT\nLAST 24H: ${last24} MT | PREVIOUS: ${prev} MT | TOTAL: ${totalDis} MT\n⚖️ BALANCE: ${balance.toFixed(2)} MT${hatchDisplay}KUTUBDIA COMPLETE:\n${kutubdia.map((l,i)=>`${i+1}. ${l.name} (A/C:${l.ac||''})`).join('\n') || 'None'}\n\nOUTER COMPLETE:\n${outer.map((l,i)=>`${i+1}. ${l.name} (A/C:${l.ac||''})`).join('\n') || 'None'}\n\nALONGSIDE:\n${activeAlong.map(l=>`${l.name} (${l.place||'KUTUBDIA'}) A/C:${l.ac||''}`).join('\n') || 'N/L'}${remarksDisplay}\n${document.getElementById('signature').value || '--'}`;
+            let report = `MORNING REPORT - ${vessel}\nDate: ${date} | Place: ${document.getElementById('reportPlace').value}\nCargo: ${vdata?.cargo || '--'} | Total: ${vdata?.totalQty || '--'} MT\nLAST 24H: ${last24} MT | PREVIOUS: ${prev} MT | TOTAL: ${totalDis} MT\n⚖️ BALANCE: ${balance.toFixed(2)} MT${hatchDisplay}KUTUBDIA COMPLETE:\n${kutubdia.map((l,i)=>`${i+1}. ${l.name} (A/C:${l.ac||''}) M No:${l.mno||''}`).join('\n') || 'None'}\n\nOUTER COMPLETE:\n${outer.map((l,i)=>`${i+1}. ${l.name} (A/C:${l.ac||''}) M No:${l.mno||''}`).join('\n') || 'None'}\n\nALONGSIDE:\n${activeAlong.map(l=>`${l.name} (${l.place||'KUTUBDIA'}) A/C:${l.ac||''} M No:${l.mno||''}`).join('\n') || 'N/L'}${remarksDisplay}\n${document.getElementById('signature').value || '--'}`;
             document.getElementById('reportOutput').innerText = report;
             refreshUI();
         };
